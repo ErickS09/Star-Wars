@@ -1,25 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import Detail from './components/Detail'
+import Home from './components/Home'
+import Pages from './components/Pages';
 
 function App() {
+
+  const [state, setState] = useState([])
+  const [info, setInfo] = useState({})
+  const initialurl = 'https://swapi.dev/api/people/'
+  const caracters = (url) => {
+    fetch(url)
+      .then(response => response.json())
+      .then((data) => {
+        setState(data.results)
+        setInfo(data)
+      })
+      .catch(error => console.log(error))
+  }
+
+  const onPrevious = () => {
+    caracters(info.previous)
+  }
+
+  const onNext = () => {
+    caracters(info.next)
+  }
+
+  useEffect(() => {
+    caracters(initialurl);
+
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Detail brand='Star Wars' />
+      <div className='container mt-5'>
+        <Pages prev={info.next} sig={info.previous} onPrevious={onPrevious} onNext={onNext} />
+        <Home star={state} />
+        <Pages prev={info.next} sig={info.previous} onPrevious={onPrevious} onNext={onNext} />
+      </div>
+    </>
   );
 }
 
 export default App;
+
