@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Detail = ({brand}) => {
+function Detail ({brand}) {
     return (
         <nav className="navbar navbar-dark bg-dark">
             <div className="container">
