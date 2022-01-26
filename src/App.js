@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Detail from './components/Detail'
 import Home from './components/Home'
 import Pages from './components/Pages';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Vehicles from './pages/Vehicles';
 
 function App() {
 
@@ -15,6 +17,7 @@ function App() {
         setState(data.results)
         setInfo(data)
       })
+
       .catch(error => console.log(error))
   }
 
@@ -32,14 +35,21 @@ function App() {
   }, [])
 
   return (
-    <>
-      <Detail brand='Star Wars' />
-      <div className='container mt-5'>
-        <Pages prev={info.next} sig={info.previous} onPrevious={onPrevious} onNext={onNext} />
-        <Home star={state} />
-        <Pages prev={info.next} sig={info.previous} onPrevious={onPrevious} onNext={onNext} />
-      </div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={(
+          <>
+            <Detail brand='Star Wars' />
+            <div className='container mt-5'>
+              <Pages prev={info.next} sig={info.previous} onPrevious={onPrevious} onNext={onNext} />
+              <Home star={state} />
+              <Pages prev={info.next} sig={info.previous} onPrevious={onPrevious} onNext={onNext} />
+            </div>
+          </>
+        )}/>
+        <Route path='vehicle' element={<Vehicles />}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
